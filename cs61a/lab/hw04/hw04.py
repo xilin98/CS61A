@@ -41,6 +41,7 @@ def squares(s):
     """
     "*** YOUR CODE HERE ***"
     new=[]
+# My solution
     for element in s:
         i=1 
         while i<=element:
@@ -48,6 +49,15 @@ def squares(s):
                 new=new+[i]
             i+=1
     return new
+# czahie's solution
+    from math import sqrt
+    square_roots = []
+    for integer in s:
+        if int(sqrt(integer)) == sqrt(integer):
+            square_roots = square_roots + [int(sqrt(integer))]
+    return square_roots
+# Official solution
+    return [round(n**0.5) for n in s if round(n**0.5)**2==n]
 def g(n):
     """Return the value of G(n), computed recursively.
 
@@ -111,6 +121,7 @@ def count_change(amount):
     True
     """
     "*** YOUR CODE HERE ***"
+    
 
 def print_move(origin, destination):
     """Print instructions to move a disk."""
