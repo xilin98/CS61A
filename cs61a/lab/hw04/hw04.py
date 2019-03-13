@@ -113,7 +113,7 @@ def count_change(amount):
     >>> count_change(10)
     14
     >>> count_change(20)
-    6
+    60
     >>> count_change(100)
     9828
     >>> from construct_check import check
@@ -121,7 +121,35 @@ def count_change(amount):
     True
     """
     "*** YOUR CODE HERE ***"
-    
+# My solution
+    def compute_largest(x,n=0):
+        if 2**(n+1)>x:
+            return 2**n
+        return compute_largest(x,n+1)
+    def helper(amount,largest):
+        if amount==0:
+            return 1
+        elif amount<0:
+            return 0
+        elif largest==1:
+            return 1
+        else:
+            return helper(amount-largest,largest)+helper(amount,largest//2)
+    return helper(amount,compute_largest(amount)) 
+
+# Official solution
+    def count_using(min_coin, amount):
+        if amount < 0:
+            return 0
+        elif amount == 0:
+            return 1
+            with_min = count_using(min_coin, amount - min_coin)
+            without_min = count_using(2*min_coin, amount)
+            return with_min + without
+        elif min_coin > amount:
+            return 0
+        else:_min
+    return count_using(1,amount)s
 
 def print_move(origin, destination):
     """Print instructions to move a disk."""
