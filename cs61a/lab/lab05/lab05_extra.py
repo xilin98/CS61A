@@ -68,8 +68,8 @@ def shakespeare_tokens(path='shakespeare.txt', url='http://composingprograms.com
         return shakespeare.read().decode(encoding='ascii').split()
 
 # Uncomment the following two lines
-tokens = shakespeare_tokens()
-table = build_successors_table(tokens)
+#tokens = shakespeare_tokens()
+#table = build_successors_table(tokens)
 
 def random_sent():
     import random
@@ -152,3 +152,30 @@ def add_trees(t1, t2):
       5
     """
     "*** YOUR CODE HERE ***"
+    # I saw the solution and wasted a lot of time ,but finish it at last whatever,don't be afraid next time
+    if not t1:
+        return t2
+    if not t2:
+        return t1
+    corresponding_branches1=branches(t1)
+    corresponding_branches2=branches(t2)
+    if len(branches(t1)) > len(branches(t2)):
+        corresponding_branches2 += [None for i in range(len(corresponding_branches2),len(corresponding_branches1))]
+    elif len(corresponding_branches2)>len(corresponding_branches1):
+        corresponding_branches1 += [None for i in range(len(corresponding_branches1),len(corresponding_branches2))]
+    return tree((label(t1)+label(t2)),[add_trees(b1,b2) for b1,b2 in zip(corresponding_branches1,corresponding_branches2)])
+
+    """
+    if not  t1:
+        return t2
+    if not t2:
+        return t1
+    new_label=label(t1)+label(t2)
+    t1_children,t2_children = branches(t1) , branches(t2)
+    length_t1, length_t2 = len(t1_children),len(t2_children)
+    if length_t1<length_t2:
+        t1_children += [None for _ in range(length_t1, length_t2)]
+    elif len(t1_children)>len(t2_children):
+        t2_children += [None for _ in range(length_t2, length_t1)]
+    return tree(new_label, [add_trees(child1,child2) for child1,child2 in zip(t1_children,t2_children)])
+    """
