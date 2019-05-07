@@ -53,5 +53,55 @@ Suite 1
 		>>> colony.places['tunnel_0_3'].remove_insect(queen)
 		>>> container.contained_ant is queen
 		True
-		>>> queen.place
-		False
+  Case C
+		>>> from ants import *
+		>>> hive, layout = Hive(AssaultPlan()), dry_layout
+		>>> dimensions = (1, 9)
+		>>> colony = AntColony(None, hive, ant_types(), layout, dimensions)
+		>>> # Testing Scare
+		>>> error_msg = "ScaryThrower doesn't scare for exactly two turns."
+		>>> scary = ScaryThrower()
+		>>> bee = Bee(3)
+		>>> colony.places["tunnel_0_0"].add_insect(scary)
+		>>> colony.places["tunnel_0_8"].add_insect(bee)
+		>>> scary.action(colony)
+		>>> bee.action(colony)
+		>>> bee.place.name
+		'tunnel_0_8'
+		>>> colony.time=1
+		>>> slow=SlowThrower()
+		>>> colony.places["tunnel_0_2"].add_insect(slow)
+		>>> slow.action(colony)
+    >>> bee.action(colony)
+		>>> bee.place.name
+		'tunnel_0_8'i
+		>>> for _ in range(2):
+		...    bee.action(colony)
+		>>> bee.place.name
+		'tunnel_0_8'
+  Case D
+		>>> from ants import *
+		>>> hive, layout = Hive(AssaultPlan()), dry_layout
+		>>> dimensions = (1, 9)
+		>>> colony = AntColony(None, hive, ant_types(), layout, dimensions)
+		>>> laser = LaserAnt()
+		>>> ant = HarvesterAnt(2)
+		>>> bee1 = Bee(2)
+		>>> bee2 = Bee(2)
+		>>> bee3 = Bee(2)
+		>>> bee4 = Bee(2)
+		>>> colony.places["tunnel_0_0"].add_insect(laser)
+		>>> colony.places["tunnel_0_0"].add_insect(bee4)
+		>>> colony.places["tunnel_0_3"].add_insect(bee1)
+		>>> colony.places["tunnel_0_3"].add_insect(bee2)
+		>>> colony.places["tunnel_0_4"].add_insect(ant)
+		>>> colony.places["tunnel_0_8"].add_insect(bee3)
+		>>> laser.action(colony)
+		>>> round(bee4.armor,2)
+		0.0
+		>>> laser.action(colony)
+		>>> round(bee3.armor,2)
+		1.8
+		>>> round(ant.armor,2)
+		0.1
+		# There is a bug if I test the '1.8' first

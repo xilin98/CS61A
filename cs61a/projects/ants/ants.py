@@ -141,6 +141,8 @@ class Bee(Insect):
     name = 'Bee'
     damage = 1
     is_watersafe=True
+    previouslyscared=False
+    direction=1
     # OVERRIDE CLASS ATTRIBUTES HERE
 
 
@@ -170,6 +172,11 @@ class Bee(Insect):
         # Extra credit: Special handling for bee direction
         # BEGIN EC
         "*** YOUR CODE HERE ***"
+        if self.direction==-1:
+            if self.place.entrance==colony.hive:
+                destination=self.place
+            else:
+                destination=self.place.entrance
         # END EC
         if self.blocked():
             self.sting(self.place.ant)
@@ -552,30 +559,54 @@ def make_slow(action, bee):
     """
     # BEGIN Problem EC
     "*** YOUR CODE HERE ***"
+    def inner(colony):
+        if colony.time%2!=1:
+            action(colony)
+    return inner
     # END Problem EC
 
 def make_scare(action, bee):
     """Return a new action method that makes the bee go backwards.
-
     action -- An action method of some Bee
     """
     # BEGIN Problem EC
     "*** YOUR CODE HERE ***"
+    def inner(colony):
+        if bee.previouslyscared:
+            action(colony)
+        else:
+            bee.direction=-1
+            action(colony)
+            previouslyscared=True
+    return inner
     # END Problem EC
 
 def apply_effect(effect, bee, duration):
     """Apply a status effect to a BEE that lasts for DURATION turns."""
     # BEGIN Problem EC
     "*** YOUR CODE HERE ***"
+    new_action=effect(bee.action,bee)
+    old_action=bee.action
+    def action(colony):
+        nonlocal duration
+        if duration:
+            new_action(colony)
+            duration-=1
+        else:
+            bee.direction=1
+            old_action(colony)
+    bee.action=action
+
     # END Problem EC
 
 
 class SlowThrower(ThrowerAnt):
     """ThrowerAnt that causes Slow on Bees."""
 
-    name = 'Slow'
+    name = '# OPTIMIZE:Slow'
     # BEGIN Problem EC
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    food_cost=4
     # END Problem EC
 
     def throw_at(self, target):
@@ -588,12 +619,15 @@ class ScaryThrower(ThrowerAnt):
 
     name = 'Scary'
     # BEGIN Problem EC
-    implemented = False   # Change to True to view in the GUI
+    implemented = True # Change to True to view in the GUI
+    food_cost=6
     # END Problem EC
 
     def throw_at(self, target):
         # BEGIN Problem EC
         "*** YOUR CODE HERE ***"
+        if target:
+            apply_effect(make_scare,target,2)
         # END Problem EC
 
 class LaserAnt(ThrowerAnt):
@@ -601,22 +635,37 @@ class LaserAnt(ThrowerAnt):
 
     name = 'Laser'
     # OVERRIDE CLASS ATTRIBUTES HERE
+    damage=2
     # BEGIN Problem OPTIONAL
-    implemented = False   # Change to True to view in the GUI
+    implemented = True # Change to True to view in the GUI
     # END Problem OPTIONAL
-
-    def __init__(self, armor=1):
+    def __init__(self, armor=2):
         ThrowerAnt.__init__(self, armor)
         self.insects_shot = 0
 
     def insects_in_front(self, hive):
         # BEGIN Problem OPTIONAL
-        return {}
+        dict={}
+        distance=0
+        temp=self.place
+        while temp!=hive:
+            if temp.ant and temp.ant!=self:
+                dict[temp.ant]=distance
+            if temp.bees:
+                for bee in temp.bees:
+                    dict[bee]=distance
+            distance+=1
+            temp=temp.entrance
+        return dict
+
         # END Problem OPTIONAL
 
     def calculate_damage(self, distance):
         # BEGIN Problem OPTIONAL
-        return 0
+        damage=self.damage-0.2*distance-0.05*self.insects_shot
+        if damage<=0:
+            damage=0
+        return damage
         # END Problem OPTIONAL
 
     def action(self, colony):

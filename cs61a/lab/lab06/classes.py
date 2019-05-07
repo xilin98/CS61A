@@ -15,7 +15,7 @@ class Card(object):
         >>> staff_member.attack
         400
         >>> staff_member.defense
-        300
+        300;4
         >>> other_staff = Card('other', 300, 500)
         >>> other_staff.attack
         300
@@ -222,7 +222,7 @@ class ProfessorCard(Card):
         for card in player.deck.cards:
             card.attack+=other_card.attack
             card.defense+=other_card.defense
-        for card in opponent.deck.cards[:]:
+        for card in opponent.deck.cards[:]:    # You might run into trouble when you mutate a list as you're iterating though it
             if card.attack==other_card.attack or card.defense==other_card.defense:
                 opponent.deck.cards.remove(card)
 
