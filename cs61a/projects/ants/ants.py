@@ -28,7 +28,11 @@ class Place(object):
         if self.exit!=None:
             self.exit.entrance=self
         # END Problem 2
-
+        # we can write this more beautiful
+        """
+        if exit:
+            exit.entrance=self
+        """
     def add_insect(self, insect):
         """Add an Insect to this Place.
 
@@ -41,14 +45,14 @@ class Place(object):
         if insect.is_ant:
             if self.ant==None:
                 self.ant=insect
-                insect.place=self
+                insect.place=self     # This structure can be replaced  and delete this line
             elif self.ant.is_container==True and self.ant.can_contain(insect):
                 self.ant.contained_ant = insect
-                insect.place=self
+                insect.place=self     # Hey , YOU BREAK THE BARRIER HERE
             elif insect.is_container==True and insect.can_contain(self.ant):
                 insect.contained_ant=self.ant
                 self.ant=insect
-                insect.place=self
+                insect.place=self     # THIS PIECE  IS NOT GOOD
             else:
                 # BEGIN Problem 9
                 assert self.ant is None, 'Two ants in {0}'.format(self)
@@ -70,7 +74,7 @@ class Place(object):
         if insect.is_ant:
             # Special handling for QueenAnt
             if isinstance(insect,QueenAnt) and insect.impostor==False:
-                return          # This idea is good Hah!!!
+                return          # This idea is good Hah!!! CAN REPLACED BY PASS TOO
             # BEGIN Problem 13
 
             # END Problem 13
@@ -188,7 +192,7 @@ class Ant(Insect):
     """An Ant occupies a place and does work for the colony."""
 
     is_ant = True
-    implemented = True  # Only implemented Ant classes should be instantiated
+    implemented =False  # Only implemented Ant classes should be instantiated
     food_cost = 0
     blocks_path=True
     is_container=False
@@ -341,10 +345,10 @@ class HungryAnt(Ant):
     name = 'Hungry'
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 6
-    implemented = True   # Change to True to view in the GUI
+    implemented =False   # Change to True to view in the GUI
     time_to_digest=3
     food_cost=4
-    # END Problem 6
+    # END Problem
     tag=True
     def __init__(self, armor=1):
         # BEGIN Problem 6
@@ -377,7 +381,7 @@ class NinjaAnt(Ant):
     damage = 1
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 7
-    implemented = True   # Change to True to view in the GUI
+    implemented =False    # Change to True to view in the GUI
     blocks_path=False
     food_cost=5
     # END Problem 7
@@ -395,8 +399,8 @@ class WallAnt(Ant):
     name='Wall'
     implemented=True
     food_cost=4
-    def __init__(self):
-        self.armor=4
+    def __init__(self,armor=4):
+        self.armor=armor
 
 # END Problem 8
 
@@ -603,7 +607,7 @@ def apply_effect(effect, bee, duration):
 class SlowThrower(ThrowerAnt):
     """ThrowerAnt that causes Slow on Bees."""
 
-    name = '# OPTIMIZE:Slow'
+    name = 'Slow'
     # BEGIN Problem EC
     implemented = True   # Change to True to view in the GUI
     food_cost=4
