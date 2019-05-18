@@ -7,3 +7,4 @@
 'remove_all-correct', (3072, 70)
 'has_cycle-correct', (3584, 70)
 'has_cycle_constant-correct', (4096, 70)
+'reverse_other-correct', (4608, 70)

@@ -115,7 +115,7 @@ def reverse_other(t):
     """
     "*** YOUR CODE HERE ***"
     def helper(t, mark):
-        if t.is_leaf:
+        if t.is_leaf():
             pass
         else:
             if mark:
@@ -124,5 +124,6 @@ def reverse_other(t):
                 for b in t.branches:
                     b.label=next(reverse)
             for  b in t.branches:
-                helper(b, mark)
+                helper(b, 1-mark)
     helper(t,1)
+    # I have to say that I am clever, but I need to be more careful and confident
