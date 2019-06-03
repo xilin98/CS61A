@@ -607,7 +607,7 @@ def apply_effect(effect, bee, duration):
 class SlowThrower(ThrowerAnt):
     """ThrowerAnt that causes Slow on Bees."""
 
-    name = 'Slow'
+    name = 'sSlow'
     # BEGIN Problem EC
     implemented = True   # Change to True to view in the GUI
     food_cost=4

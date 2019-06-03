@@ -78,7 +78,7 @@ def has_cycle(link):
         link.append(link)
         link = link.rest
     return False
-    # It's a clever solutionk
+    # It's a clever solution
 def has_cycle_constant(link):
     """Return whether link contains a cycle.
 

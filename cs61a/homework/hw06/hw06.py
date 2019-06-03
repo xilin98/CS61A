@@ -32,6 +32,15 @@ class Fib():
         next_fib=Fib(self.m_2)
         next_fib.m_1,next_fib.m_2=self.m_2,self.m_1+self.m_2
         return next_fib
+    # Official solution:
+        """
+        if self.value == 0:
+            result = Fib(1)
+        else:
+            result=Fib(self.value+self.previous)
+        result.previous=self.value
+        return result
+        """
     def __repr__(self):
         return str(self.value)
 
