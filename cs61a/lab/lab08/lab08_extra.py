@@ -27,18 +27,26 @@ class Keyboard:
     """
 
     def __init__(self, *args):
-        "*** YOUR CODE HERE ***"
-
+        self.buttons={}
+        for b in args:
+            self.buttons[b.pos]=b
     def press(self, info):
         """Takes in a position of the button pressed, and
         returns that button's output"""
-        "*** YOUR CODE HERE ***"
+        if not self.buttons.get(info):
+            return ''
+        else:
+            self.buttons[info].times_pressed+=1
+            return self.buttons[info].key
 
     def typing(self, typing_input):
         """Takes in a list of positions of buttons pressed, and
         returns the total output"""
         "*** YOUR CODE HERE ***"
-
+        output=''
+        for i in typing_input:
+            output+=self.press(i)
+        return output
 class Button:
     def __init__(self, pos, key):
         self.pos = pos
@@ -76,7 +84,24 @@ def make_advanced_counter_maker():
     1
     """
     "*** YOUR CODE HERE ***"
-
+    global_count=0
+    def inner():
+        count=0
+        def  counter(command):
+            nonlocal count
+            nonlocal global_count
+            if command== 'count':
+                count+=1
+                return count
+            elif command=='global-count':
+                global_count+=1
+                return global_count
+            elif command=='reset':
+                count=0
+            elif command=='global-reset':
+                global_count=0
+        return counter
+    return inner
 # Lists
 def trade(first, second):
     """Exchange the smallest prefixes of first and second that have equal sum.
@@ -108,8 +133,17 @@ def trade(first, second):
     m, n = 1, 1
 
     "*** YOUR CODE HERE ***"
-
-    if False: # change this line!
+    def helper(first,second):
+        nonlocal m,n
+        while m<len(first) and n < len(second):
+            if sum(first[:m]) == sum(second[:n]):
+                return True
+            elif sum(first[:m]) > sum(second[:n]):
+                n+=1
+            else:
+                m+=1
+        return False
+    if helper(first,second): # change this line!
         first[:m], second[:n] = second[:n], first[:m]
         return 'Deal!'
     else:
@@ -139,13 +173,14 @@ def permutations(seq):
     >>> sorted(permutations("ab"))
     [['a', 'b'], ['b', 'a']]
     """
-    if ____________________:
-        yield ____________________
+    if len(seq)==1 :
+        yield seq
     else:
-        for perm in _____________________:
-            for _____ in ________________:
-                _________________________
-
+        for perm in permutations(seq[1:]):
+            for i in range(len(perm)+1):
+                t = list(perm)
+                t.insert(i,seq[0])
+                yield t
 # Recursive objects
 def make_to_string(front, mid, back, empty_repr):
     """ Returns a function that turns linked lists to strings.
@@ -163,7 +198,12 @@ def make_to_string(front, mid, back, empty_repr):
     '()'
     """
     "*** YOUR CODE HERE ***"
-
+    def display_link(link):
+        if link == Link.empty:
+            return empty_repr
+        else :
+            return front + str(link.first) + mid + display_link(link.rest) + back
+    return display_link
 def tree_map(fn, t):
     """Maps the function fn over the entries of t and returns the
     result in a new tree.
@@ -196,7 +236,10 @@ def tree_map(fn, t):
         8
     """
     "*** YOUR CODE HERE ***"
-
+    if t.is_leaf():
+        return Tree(fn(t.label))
+    else:
+        return Tree(fn(t.label),[tree_map(fn,branch) for branch in t.branches])
 def long_paths(tree, n):
     """Return a list of all paths in tree with length at least n.
 
@@ -227,7 +270,23 @@ def long_paths(tree, n):
     [Link(0, Link(11, Link(12, Link(13, Link(14)))))]
     """
     "*** YOUR CODE HERE ***"
-
+    def find_paths(t):
+        if t.is_leaf():
+           yield Link(t.label)
+        else :
+            for branch in t.branches:
+                for path in find_paths(branch):
+                    yield Link(t.label,path)
+    def find_nodes(lst):
+        if lst == Link.empty:
+            return 0
+        else:
+            return 1+find_nodes(lst.rest)
+    longpaths=[]
+    for path in find_paths(tree):
+        if find_nodes(path)>n:
+            longpaths+=[path]
+    return longpaths
 # Orders of Growth
 def zap(n):
     i, count = 1, 0
