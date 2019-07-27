@@ -3,19 +3,17 @@
 
 ; Q5
 (define lst
-  (list (list 1) 2 (cons 3 4) 5)
+  'YOUR-CODE-HERE
 )
 
 ; Q6
 (define (composed f g)
   'YOUR-CODE-HERE
-  (lambda (x) (f (g x)))
 )
 
 ; Q7
 (define (remove item lst)
   'YOUR-CODE-HERE
-  (filter (lambda (x) (not (= item x))) lst)
 )
 
 
@@ -30,32 +28,14 @@
 ; Q8
 (define (no-repeats s)
   'YOUR-CODE-HERE
-  (if (null? s)
-    s
-    (cons (car s) (no-repeats (filter (lambda (x) (not (= x (car s)))) (cdr s))))
-  )
 )
 
 ; Q9
 (define (substitute s old new)
   'YOUR-CODE-HERE
-  (if (null? s)
-    s
-    (if (pair? (car s))
-      (cons (substitute (car s) old new) (substitute (cdr s) old new))
-      (if (eq? (car s) old)
-        (cons new (substitute (cdr s) old new))
-        (cons (car s) (substitute (cdr s) old new))
-      )
-    )
-  )
 )
 
 ; Q10
 (define (sub-all s olds news)
   'YOUR-CODE-HERE
-  (if (null? olds)
-    s
-    (sub-all (substitute s (car olds) (car news)) (cdr olds) (cdr news))
-  )
 )
